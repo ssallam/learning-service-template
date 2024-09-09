@@ -69,6 +69,11 @@ class SynchronizedData(BaseSynchronizedData):
         return self.db.get("price", None)
 
     @property
+    def balance(self) -> Optional[float]:
+        """Get the token balance."""
+        return self.db.get("balance", None)
+
+    @property
     def participant_to_price_round(self) -> DeserializedCollection:
         """Get the participants to the price round."""
         return self._get_deserialized("participant_to_price_round")
@@ -97,7 +102,10 @@ class APICheckRound(CollectSameUntilThresholdRound):
     done_event = Event.DONE
     no_majority_event = Event.NO_MAJORITY
     collection_key = get_name(SynchronizedData.participant_to_price_round)
-    selection_key = get_name(SynchronizedData.price)
+    selection_key = (
+        get_name(SynchronizedData.price),
+        get_name(SynchronizedData.balance),
+    )
 
     # Event.ROUND_TIMEOUT  # this needs to be referenced for static checkers
 

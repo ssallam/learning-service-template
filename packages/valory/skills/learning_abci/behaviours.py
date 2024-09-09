@@ -81,7 +81,8 @@ class APICheckBehaviour(LearningBaseBehaviour):  # pylint: disable=too-many-ance
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             sender = self.context.agent_address
             price = yield from self.get_price()
-            payload = APICheckPayload(sender=sender, price=price)
+            balance = yield from self.get_balance()
+            payload = APICheckPayload(sender=sender, price=price, balance=balance)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
@@ -91,11 +92,21 @@ class APICheckBehaviour(LearningBaseBehaviour):  # pylint: disable=too-many-ance
 
     def get_price(self):
         """Get token price from Coingecko"""
+        # Interact with Coingecko's API
         # result = yield from self.get_http_response("coingecko.com")
         yield
         price = 1.0
         self.context.logger.info(f"Price is {price}")
         return price
+
+    def get_balance(self):
+        """Get balance"""
+        # Use the contract api to interact with the ERC20 contract
+        # result = yield from self.get_contract_api_response()
+        yield
+        balance = 1.0
+        self.context.logger.info(f"Balance is {balance}")
+        return balance
 
 
 class DecisionMakingBehaviour(
