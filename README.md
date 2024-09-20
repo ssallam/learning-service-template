@@ -96,3 +96,11 @@ A service to learn about [Olas](https://olas.network/) agents and [Open Autonomy
     ```
 
 
+## Note on updating skill/agent code
+When making changes to any of the skills/agents under development, make sure to update 
+the versions in the packages.json file under `dev` (and other references) and run 
+      autonomy packages lock
+      autonomy push-all
+(The first one updates the IPFS hash of each package, the second command uploads the packages to IPFS)
+  also don't forget to update the version in the skill __init__ file
+

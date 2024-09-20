@@ -18,7 +18,7 @@
 # ------------------------------------------------------------------------------
 
 """This package contains round behaviours of LearningAbciApp."""
-
+import json
 from abc import ABC
 from typing import Generator, Set, Type, cast
 
@@ -93,8 +93,9 @@ class APICheckBehaviour(LearningBaseBehaviour):  # pylint: disable=too-many-ance
     def get_price(self):
         """Get token price from Coingecko"""
         # Interact with Coingecko's API
-        coingecko_endpoint = self.params.coingecko_price_template.format(self.params.coingecko_api_key)
-        result = yield from self.get_http_response(coingecko_endpoint)
+        coingecko_endpoint = self.params.coingecko_price_template.format(api_key=self.params.coingecko_api_key)
+        respopnse = yield from self.get_http_response(method="GET", url=coingecko_endpoint)
+        result = json.loads(respopnse.body)
         price = result.get("autonolas").get("usd")
         self.context.logger.info(f"Price is {price}")
         return price
