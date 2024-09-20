@@ -1,13 +1,13 @@
 name: learning_service
 author: valory
-version: 0.1.0
+version: 0.1.1
 description: A learning service.
 aea_version: '>=1.0.0, <2.0.0'
 license: Apache-2.0
 fingerprint:
   README.md: bafybeid42pdrf6qrohedylj4ijrss236ai6geqgf3he44huowiuf7pl464
 fingerprint_ignore_patterns: []
-agent: valory/learning_agent:0.1.0:bafybeibekcecbhrr75vqa65n3gxlmdj65igypfq5oyqv76vhgwfr7k6ykm
+agent: valory/learning_agent:0.1.1:bafybeiesrlicxsuvaq7ivdofmizq7gghto7su4kiscxyqgm3ywdazk55ry
 number_of_agents: 4
 deployment:
   agent:

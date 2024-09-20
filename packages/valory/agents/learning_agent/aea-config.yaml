@@ -1,6 +1,6 @@
 agent_name: learning_agent
 author: valory
-version: 0.1.0
+version: 0.1.1
 license: Apache-2.0
 description: A learning agent.
 aea_version: '>=1.19.0, <2.0.0'
@@ -31,8 +31,8 @@ protocols:
 skills:
 - valory/abstract_abci:0.1.0:bafybeihu2bcgjk2tqjiq2zhk3uogtfszqn4osvdt7ho3fubdpdj4jgdfjm
 - valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
-- valory/learning_abci:0.1.0:bafybeics2eywsq54efsjf6f7cntvt3mlf6cjwuwoptuepfq4vvdovhxs7e
-- valory/learning_chained_abci:0.1.0:bafybeihjlm5wvlcrrupapxkhpuj6dfydn72usvb5nq6ipkw4n26zbr3hlq
+- valory/learning_abci:0.1.1:bafybeib554ldyzxhdt7ealdjdpcloirztm37g5vguklo24ld4dblu3ka5u
+- valory/learning_chained_abci:0.1.1:bafybeif5dfe3qln4zwjdsuui2hhjlsrnfw436kop5zi2kai2x3o4qolhoq
 - valory/registration_abci:0.1.0:bafybeicnth5q4httefsusywx3zrrq4al47owvge72dqf2fziruicq6hqta
 - valory/reset_pause_abci:0.1.0:bafybeievjciqdvxhqxfjd4whqs27h6qbxqzrae7wwj7fpvxlvmtw3x35im
 - valory/termination_abci:0.1.0:bafybeid54buqxipiuduw7b6nnliiwsxajnltseuroad53wukfonpxca2om
@@ -74,7 +74,7 @@ default_connection: null
 public_id: valory/abci:0.1.0
 type: connection
 config:
-  target_skill_id: valory/learning_chained_abci:0.1.0
+  target_skill_id: valory/learning_chained_abci:0.1.1
   host: ${str:localhost}
   port: ${int:26658}
   use_tendermint: ${bool:false}
@@ -113,9 +113,9 @@ public_id: valory/http_server:0.22.0:bafybeicblltx7ha3ulthg7bzfccuqqyjmihhrvfezt
 type: connection
 config:
   host: 0.0.0.0
-  target_skill_id: valory/learning_chained_abci:0.1.0
+  target_skill_id: valory/learning_chained_abci:0.1.1
 ---
-public_id: valory/learning_chained_abci:0.1.0
+public_id: valory/learning_chained_abci:0.1.1
 type: skill
 models:
   benchmark_tool:
