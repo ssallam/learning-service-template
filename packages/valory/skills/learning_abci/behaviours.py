@@ -22,6 +22,8 @@ import json
 from abc import ABC
 from typing import Generator, Set, Type, cast
 
+from packages.valory.contracts.erc20.contract import ERC20
+from packages.valory.protocols.contract_api import ContractApiMessage
 from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.valory.skills.abstract_round_abci.behaviours import (
     AbstractRoundBehaviour,
@@ -103,11 +105,28 @@ class APICheckBehaviour(LearningBaseBehaviour):  # pylint: disable=too-many-ance
     def get_balance(self):
         """Get balance"""
         # Use the contract api to interact with the ERC20 contract
-        # result = yield from self.get_contract_api_response()
-        yield
-        balance = 1.0
-        self.context.logger.info(f"Balance is {balance}")
-        return balance
+        response = yield from self.get_contract_api_response(
+            performative=ContractApiMessage.Performative.GET_RAW_TRANSACTION,  # type: ignore
+            contract_id=str(ERC20.contract_id),
+            contract_callable="check_balance",
+            contract_address=self.params.token_address,
+            account=self.synchronized_data.safe_contract_address
+        )
+        if response.performative != ContractApiMessage.Performative.RAW_TRANSACTION:
+            self.context.logger.error(
+                f"Getting the safe account's balance failed: {response}"
+            )
+            return None
+
+        token_balance = response.raw_transaction.body.get("token", None)
+        if token_balance is None:
+            self.context.logger.error(
+                f"Getting token balance of the safe account failed: {response}"
+            )
+            return None
+
+        self.context.logger.info(f"Balance is {int(token_balance)}")
+        return int(token_balance)
 
 
 class DecisionMakingBehaviour(

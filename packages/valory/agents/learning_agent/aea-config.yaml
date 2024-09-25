@@ -19,6 +19,7 @@ contracts:
 - valory/gnosis_safe_proxy_factory:0.1.0:bafybeihi4cvrnf5ne7t5cxcwix3dbtfjucfjux6zn4wouebjx3ldmrmnpm
 - valory/multisend:0.1.0:bafybeig5byt5urg2d2bsecufxe5ql7f4mezg3mekfleeh32nmuusx66p4y
 - valory/service_registry:0.1.0:bafybeieqgcuxmz4uxvlyb62mfsf33qy4xwa5lrij4vvcmrtcsfkng43oyq
+- valory/erc20:0.1.0:bafybeiel24epwfr5nsk5xt2dfdimrzhrqchjxdeeh6wpm6nz35w6po6osa
 protocols:
 - open_aea/signing:1.0.0:bafybeihv62fim3wl2bayavfcg3u5e5cxu3b7brtu4cn5xoxd6lqwachasi
 - valory/abci:0.1.0:bafybeiaqmp7kocbfdboksayeqhkbrynvlfzsx4uy4x6nohywnmaig4an7u
@@ -31,12 +32,12 @@ protocols:
 skills:
 - valory/abstract_abci:0.1.0:bafybeihu2bcgjk2tqjiq2zhk3uogtfszqn4osvdt7ho3fubdpdj4jgdfjm
 - valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
-- valory/learning_abci:0.1.1:bafybeib554ldyzxhdt7ealdjdpcloirztm37g5vguklo24ld4dblu3ka5u
-- valory/learning_chained_abci:0.1.1:bafybeif5dfe3qln4zwjdsuui2hhjlsrnfw436kop5zi2kai2x3o4qolhoq
+- valory/learning_abci:0.1.1:bafybeicwmdazl4yljiihdl2kvfxi7e3epv2w2z6cugpomngnhn3f2d444i
+- valory/learning_chained_abci:0.1.1:bafybeif5gyqmvrm5rouhsui25qfb3q22vgbtfysrzvez45utn2bg7der4i
 - valory/registration_abci:0.1.0:bafybeicnth5q4httefsusywx3zrrq4al47owvge72dqf2fziruicq6hqta
 - valory/reset_pause_abci:0.1.0:bafybeievjciqdvxhqxfjd4whqs27h6qbxqzrae7wwj7fpvxlvmtw3x35im
-- valory/termination_abci:0.1.0:bafybeid54buqxipiuduw7b6nnliiwsxajnltseuroad53wukfonpxca2om
-- valory/transaction_settlement_abci:0.1.0:bafybeihq2yenstblmaadzcjousowj5kfn5l7ns5pxweq2gcrsczfyq5wzm
+- valory/termination_abci:0.1.0:bafybeig375yjbsrsbb56tmlfknea7nvqqz4gcfgkbxq6i5ndcwzcet6eo4
+- valory/transaction_settlement_abci:0.1.0:bafybeigauorv3oplehxmm7e7j3li4yuta4d47tkf77p7br7ztvezmy3dmy
 default_ledger: ethereum
 required_ledgers:
 - ethereum
@@ -84,15 +85,15 @@ type: connection
 config:
   ledger_apis:
     ethereum:
-      address: ${str:http://localhost:8545}
-      chain_id: ${int:31337}
+      address: ${ETHEREUM_LEDGER_RPC:str:http://localhost:8545}
+      chain_id: ${ETHEREUM_LEDGER_CHAIN_ID:int:31337}
       poa_chain: ${bool:false}
       default_gas_price_strategy: ${str:eip1559}
     gnosis:
-      address: ${str:http://localhost:8545}
-      chain_id: ${int:1337}
-      poa_chain: ${bool:false}
-      default_gas_price_strategy: ${str:eip1559}
+      address: ${GNOSIS_LEDGER_RPC:str:http://host.docker.internal:8545}
+      chain_id: ${GNOSIS_LEDGER_CHAIN_ID:int:42220}
+      poa_chain: ${GNOSIS_LEDGER_IS_POA_CHAIN:bool:false}
+      default_gas_price_strategy: ${GNOSIS_LEDGER_PRICING:str:eip1559}
 ---
 public_id: valory/p2p_libp2p_client:0.1.0
 type: connection
@@ -185,6 +186,7 @@ models:
       ipfs_address: ${str:https://gateway.autonolas.tech/ipfs/}
       coingecko_price_template: ${str:https://api.coingecko.com/api/v3/simple/price?ids=autonolas&vs_currencies=usd&x_cg_demo_api_key={api_key}}
       coingecko_api_key: ${str:null}
+      token_address: ${str:0x4ecaba5870353805a9f068101a40e0f32ed605c6}
       default_chain_id: ${str:gnosis}
       termination_from_block: ${int:34088325}
       transfer_target_address: ${str:0x615d3278680337e2D39C3bc5042D959C7938B917}
