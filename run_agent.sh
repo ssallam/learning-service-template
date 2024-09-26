@@ -38,6 +38,7 @@ python scripts/aea-config-replace.py
 # Copy and add the keys and issue certificates
 cd learning_agent
 cp $PWD/../ethereum_private_key.txt .
+cp $PWD/../.env .
 autonomy add-key ethereum ethereum_private_key.txt
 autonomy issue-certificates
 
@@ -45,8 +46,7 @@ autonomy issue-certificates
 rm -r ~/.tendermint
 tendermint init > /dev/null 2>&1
 echo "Starting Tendermint..."
-tendermint node --proxy_app=tcp://127.0.0.1:26658 --rpc.laddr=tcp://127.0.0.1:26657 --p2p.laddr=tcp://0.0.0.0:26656 --p2p.seeds= --consensus.create_empty_blocks=true > /dev/null 2>&1 &
-tm_subprocess_pid=$!
+tendermint node --proxy_app=tcp://127.0.0.1:26658 --rpc.laddr=tcp://127.0.0.1:26657 --p2p.laddr=tcp://0.0.0.0:26656 --p2p.seeds= --consensus.create_empty_blocks=true > /dev/null 2>&1 & tm_subprocess_pid=$!
 
 # Run the agent
 aea -s run

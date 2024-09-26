@@ -18,10 +18,13 @@
 # ------------------------------------------------------------------------------
 
 """This package contains round behaviours of LearningAbciApp."""
-
+import json
 from abc import ABC
-from typing import Generator, Set, Type, cast
+from typing import Generator, Set, Type, cast, Optional
 
+from packages.valory.contracts.erc20.contract import ERC20
+from packages.valory.contracts.gnosis_safe.contract import GnosisSafeContract
+from packages.valory.protocols.contract_api import ContractApiMessage
 from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.valory.skills.abstract_round_abci.behaviours import (
     AbstractRoundBehaviour,
@@ -41,7 +44,7 @@ from packages.valory.skills.learning_abci.rounds import (
     SynchronizedData,
     TxPreparationRound,
 )
-
+from packages.valory.skills.transaction_settlement_abci.payload_tools import hash_payload_to_hex
 
 HTTP_OK = 200
 GNOSIS_CHAIN_ID = "gnosis"
@@ -93,20 +96,38 @@ class APICheckBehaviour(LearningBaseBehaviour):  # pylint: disable=too-many-ance
     def get_price(self):
         """Get token price from Coingecko"""
         # Interact with Coingecko's API
-        # result = yield from self.get_http_response("coingecko.com")
-        yield
-        price = 1.0
+        coingecko_endpoint = self.params.coingecko_price_template.format(api_key=self.params.coingecko_api_key)
+        respopnse = yield from self.get_http_response(method="GET", url=coingecko_endpoint)
+        result = json.loads(respopnse.body)
+        price = result.get("autonolas").get("usd")
         self.context.logger.info(f"Price is {price}")
         return price
 
     def get_balance(self):
         """Get balance"""
         # Use the contract api to interact with the ERC20 contract
-        # result = yield from self.get_contract_api_response()
-        yield
-        balance = 1.0
-        self.context.logger.info(f"Balance is {balance}")
-        return balance
+        response = yield from self.get_contract_api_response(
+            performative=ContractApiMessage.Performative.GET_STATE,  # type: ignore
+            contract_id=str(ERC20.contract_id),
+            contract_callable="check_balance",
+            contract_address=self.params.token_address,
+            account=self.synchronized_data.safe_contract_address
+        )
+        if response.performative != ContractApiMessage.Performative.STATE:
+            self.context.logger.error(
+                f"Getting the safe account's balance failed: {response}"
+            )
+            return None
+
+        token_balance = response.state.body.get("token", None)
+        if token_balance is None:
+            self.context.logger.error(
+                f"Getting token balance of the safe account failed: {response}"
+            )
+            return None
+
+        self.context.logger.info(f"Balance is {int(token_balance)}")
+        return int(token_balance)
 
 
 class DecisionMakingBehaviour(
@@ -130,12 +151,15 @@ class DecisionMakingBehaviour(
 
         self.set_done()
 
-    def get_event(self):
+    def get_event(self) -> str:
         """Get the next event"""
         # Using the token price from the previous round, decide whether we should make a transfer or not
+        price = self.synchronized_data.price
         event = Event.DONE.value
+        if price >= 1.48:
+            event = Event.TRANSACT.value
         self.context.logger.info(f"Event is {event}")
-        return event
+        return str(event)
 
 
 class TxPreparationBehaviour(
@@ -161,12 +185,53 @@ class TxPreparationBehaviour(
 
         self.set_done()
 
-    def get_tx_hash(self):
+    def get_tx_hash(self) -> Generator[None, None, str]:
         """Get the tx hash"""
         # We need to prepare a 1 wei transfer from the safe to another (configurable) account.
-        yield
-        tx_hash = None
+
+        data = bytes.fromhex("")
+        safe_tx_hash = yield from self._get_safe_tx_hash(data)
+        if safe_tx_hash is None:
+            return "{}"
+
+        # return tx_hash
+        tx_hash = hash_payload_to_hex(
+            safe_tx_hash=safe_tx_hash,
+            ether_value=1000000000000000,  # send 1 WEI
+            safe_tx_gas=SAFE_GAS,
+            to_address="0x3d4374731BA30d1670493eC3c9bAd6A445bda348",
+            data=data,
+        )
         self.context.logger.info(f"Transaction hash is {tx_hash}")
+        return tx_hash
+
+    def _get_safe_tx_hash(self, data: bytes) -> Generator[None, None, Optional[str]]:
+        """
+        Prepares and returns the safe tx hash.
+
+        This hash will be signed later by the agents, and submitted to the safe contract.
+        Note that this is the transaction that the safe will execute, with the provided data.
+
+        :param data: the safe tx data. This is the data of the function being called, in this case it's empty.
+        :return: the tx hash
+        """
+        response = yield from self.get_contract_api_response(
+            performative=ContractApiMessage.Performative.GET_STATE,  # type: ignore
+            contract_address=self.synchronized_data.safe_contract_address,  # the safe contract address
+            contract_id=str(GnosisSafeContract.contract_id),
+            contract_callable="get_raw_safe_transaction_hash",
+            to_address="0x3d4374731BA30d1670493eC3c9bAd6A445bda348",  # the contract the safe will invoke
+            value=1000000000000000,
+            data=data,
+            safe_tx_gas=SAFE_GAS,
+        )
+        if response.performative != ContractApiMessage.Performative.STATE:
+            self.context.logger.error(
+                f"get safe hash failed: {response.performative.value}"
+            )
+            return None
+
+        tx_hash = cast(str, response.state.body["tx_hash"])[2:]
         return tx_hash
 
 

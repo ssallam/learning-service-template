@@ -11,13 +11,15 @@ fi
 # Push packages and fetch service
 make clean
 
+autonomy packages lock
 autonomy push-all
 
 autonomy fetch --local --service valory/learning_service && cd learning_service
 
 # Build the image
-autonomy init --reset --author author --remote --ipfs --ipfs-node "/dns/registry.autonolas.tech/tcp/443/https"
+autonomy init --reset --author ssallam --remote --ipfs --ipfs-node "/dns/registry.autonolas.tech/tcp/443/https"
 autonomy build-image
+
 
 # Copy .env file
 cp $REPO_PATH/.env .
