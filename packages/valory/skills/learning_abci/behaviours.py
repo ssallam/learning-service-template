@@ -18,10 +18,12 @@
 # ------------------------------------------------------------------------------
 
 """This package contains round behaviours of LearningAbciApp."""
-
+import json
 from abc import ABC
 from typing import Generator, Set, Type, cast
 
+from packages.valory.contracts.erc20.contract import ERC20
+from packages.valory.protocols.contract_api import ContractApiMessage
 from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.valory.skills.abstract_round_abci.behaviours import (
     AbstractRoundBehaviour,
@@ -93,20 +95,38 @@ class APICheckBehaviour(LearningBaseBehaviour):  # pylint: disable=too-many-ance
     def get_price(self):
         """Get token price from Coingecko"""
         # Interact with Coingecko's API
-        # result = yield from self.get_http_response("coingecko.com")
-        yield
-        price = 1.0
+        coingecko_endpoint = self.params.coingecko_price_template.format(api_key=self.params.coingecko_api_key)
+        respopnse = yield from self.get_http_response(method="GET", url=coingecko_endpoint)
+        result = json.loads(respopnse.body)
+        price = result.get("autonolas").get("usd")
         self.context.logger.info(f"Price is {price}")
         return price
 
     def get_balance(self):
         """Get balance"""
         # Use the contract api to interact with the ERC20 contract
-        # result = yield from self.get_contract_api_response()
-        yield
-        balance = 1.0
-        self.context.logger.info(f"Balance is {balance}")
-        return balance
+        response = yield from self.get_contract_api_response(
+            performative=ContractApiMessage.Performative.GET_STATE,  # type: ignore
+            contract_id=str(ERC20.contract_id),
+            contract_callable="check_balance",
+            contract_address=self.params.token_address,
+            account=self.synchronized_data.safe_contract_address
+        )
+        if response.performative != ContractApiMessage.Performative.STATE:
+            self.context.logger.error(
+                f"Getting the safe account's balance failed: {response}"
+            )
+            return None
+
+        token_balance = response.state.body.get("token", None)
+        if token_balance is None:
+            self.context.logger.error(
+                f"Getting token balance of the safe account failed: {response}"
+            )
+            return None
+
+        self.context.logger.info(f"Balance is {int(token_balance)}")
+        return int(token_balance)
 
 
 class DecisionMakingBehaviour(
