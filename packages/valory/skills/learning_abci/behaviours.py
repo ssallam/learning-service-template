@@ -106,19 +106,19 @@ class APICheckBehaviour(LearningBaseBehaviour):  # pylint: disable=too-many-ance
         """Get balance"""
         # Use the contract api to interact with the ERC20 contract
         response = yield from self.get_contract_api_response(
-            performative=ContractApiMessage.Performative.GET_RAW_TRANSACTION,  # type: ignore
+            performative=ContractApiMessage.Performative.GET_STATE,  # type: ignore
             contract_id=str(ERC20.contract_id),
             contract_callable="check_balance",
             contract_address=self.params.token_address,
             account=self.synchronized_data.safe_contract_address
         )
-        if response.performative != ContractApiMessage.Performative.RAW_TRANSACTION:
+        if response.performative != ContractApiMessage.Performative.STATE:
             self.context.logger.error(
                 f"Getting the safe account's balance failed: {response}"
             )
             return None
 
-        token_balance = response.raw_transaction.body.get("token", None)
+        token_balance = response.state.body.get("token", None)
         if token_balance is None:
             self.context.logger.error(
                 f"Getting token balance of the safe account failed: {response}"

@@ -32,12 +32,12 @@ protocols:
 skills:
 - valory/abstract_abci:0.1.0:bafybeihu2bcgjk2tqjiq2zhk3uogtfszqn4osvdt7ho3fubdpdj4jgdfjm
 - valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
-- valory/learning_abci:0.1.1:bafybeicwmdazl4yljiihdl2kvfxi7e3epv2w2z6cugpomngnhn3f2d444i
-- valory/learning_chained_abci:0.1.1:bafybeif5gyqmvrm5rouhsui25qfb3q22vgbtfysrzvez45utn2bg7der4i
+- valory/learning_abci:0.1.1:bafybeibddclrhftjrfulc2y2qzce6fcane33pnr6mhqm757xsyzrehnad4
+- valory/learning_chained_abci:0.1.1:bafybeiea7vrlhvpvscpof7a2i4dhnnmbqdkpo7ypbjwza4c2t6u62x5cze
 - valory/registration_abci:0.1.0:bafybeicnth5q4httefsusywx3zrrq4al47owvge72dqf2fziruicq6hqta
 - valory/reset_pause_abci:0.1.0:bafybeievjciqdvxhqxfjd4whqs27h6qbxqzrae7wwj7fpvxlvmtw3x35im
-- valory/termination_abci:0.1.0:bafybeig375yjbsrsbb56tmlfknea7nvqqz4gcfgkbxq6i5ndcwzcet6eo4
-- valory/transaction_settlement_abci:0.1.0:bafybeigauorv3oplehxmm7e7j3li4yuta4d47tkf77p7br7ztvezmy3dmy
+- valory/termination_abci:0.1.0:bafybeid54buqxipiuduw7b6nnliiwsxajnltseuroad53wukfonpxca2om
+- valory/transaction_settlement_abci:0.1.0:bafybeihq2yenstblmaadzcjousowj5kfn5l7ns5pxweq2gcrsczfyq5wzm
 default_ledger: ethereum
 required_ledgers:
 - ethereum
@@ -121,7 +121,7 @@ type: skill
 models:
   benchmark_tool:
     args:
-      log_dir: ${str:/logs}
+      log_dir: ${LOG_DIR:str:/logs}
   params:
     args:
       cleanup_history_depth: 1
