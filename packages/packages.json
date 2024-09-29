@@ -1,6 +1,7 @@
 {
     "dev": {
         "contract/valory/erc20/0.1.0": "bafybeiel24epwfr5nsk5xt2dfdimrzhrqchjxdeeh6wpm6nz35w6po6osa",
+        "contract/valory/uniswapv2router02/0.1.0": "bafybeiarnyppnzp7ccrcnk4bh6jvvnzu3kmoejnsnyk5cgahimh2n3sabi",
         "skill/valory/learning_abci/0.1.0": "bafybeics2eywsq54efsjf6f7cntvt3mlf6cjwuwoptuepfq4vvdovhxs7e",
         "skill/valory/learning_chained_abci/0.1.0": "bafybeihjlm5wvlcrrupapxkhpuj6dfydn72usvb5nq6ipkw4n26zbr3hlq",
         "agent/valory/learning_agent/0.1.0": "bafybeibekcecbhrr75vqa65n3gxlmdj65igypfq5oyqv76vhgwfr7k6ykm",
