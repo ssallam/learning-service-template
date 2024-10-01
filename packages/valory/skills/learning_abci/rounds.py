@@ -74,6 +74,18 @@ class SynchronizedData(BaseSynchronizedData):
         return self.db.get("balance", None)
 
     @property
+    def tokens(self) -> Optional[list]:
+        return self.db.get("tokens", None)
+
+    @property
+    def prices(self) -> Optional[list]:
+        return self.db.get("prices", None)
+
+    @property
+    def amounts(self) -> Optional[str]:
+        return self.db.get("amounts", "")
+
+    @property
     def participant_to_price_round(self) -> DeserializedCollection:
         """Get the participants to the price round."""
         return self._get_deserialized("participant_to_price_round")

@@ -29,7 +29,7 @@ autonomy packages sync --source valory-xyz/open-aea:$AEA_VERSION --source valory
 
 # Ensure hashes are updated
 autonomy packages lock
-autonomy push-all
+#autonomy push-all
 
 # Fetch the agent
 autonomy fetch --local --agent valory/learning_agent

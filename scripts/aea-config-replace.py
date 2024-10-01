@@ -41,6 +41,16 @@ def main() -> None:
             ] = f"${{str:{os.getenv('GNOSIS_LEDGER_RPC')}}}"
 
         # Params
+        if os.getenv("UNI_ROUTER_ADDRESS"):
+            config[-1]["models"]["params"]["args"][
+                "uni_router_address"
+            ] = f"${{str:{os.getenv('UNI_ROUTER_ADDRESS')}}}"  # type: ignore
+
+        if os.getenv("TOKEN_ADDRESS"):
+            config[-1]["models"]["params"]["args"][
+                "token_address"
+            ] = f"${{str:{os.getenv('TOKEN_ADDRESS')}}}"  # type: ignore
+
         if os.getenv("COINGECKO_API_KEY"):
             config[-1]["models"]["params"]["args"][
                 "coingecko_api_key"

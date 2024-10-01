@@ -7,17 +7,17 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeiho3lkochqpmes4f235chq26oggmwnol3vjuvhosleoubbjirbwaq
-  behaviours.py: bafybeifam2j6avqkqgnftylektkgfr44bx64svt46n5orfdce6u5v2hck4
+  behaviours.py: bafybeignbl7agfhvyn7diqszxa63i5m4hqxuanxve4fecewl4dmc4ny4xq
   dialogues.py: bafybeifqjbumctlffx2xvpga2kcenezhe47qhksvgmaylyp5ypwqgfar5u
   fsm_specification.yaml: bafybeicxvornc7gpvpotob6z46fl7qmataxydn22fr22qnb4ausfg6vppe
   handlers.py: bafybeigjadr4thz6hfpfx5abezbwnqhbxmachf4efasrn4z2vqhsqgnyvi
-  models.py: bafybeiagzhv7jukillz5ta47pbpgu554t22uz35vsf7ez55vs7yu6f3bni
-  payloads.py: bafybeicfc54bmgft2nlwpykcxaqvrbjrhcdkdck2xt2kyou6u6lczoorfu
-  rounds.py: bafybeif73latxgwatmslh34mrt3hgs762bhcusf4dyilxigqxwfmoou3dm
+  models.py: bafybeic2qs5b7waeae7eh5napf6r6pjiz4fl25jnbqu4tvgiguhgp5xog4
+  payloads.py: bafybeihh7rwv4bc3hyb5357u2jiae3scbsw5msrqcegl6yg4dofhpds53i
+  rounds.py: bafybeiepcmswlpw6cjzaddjkipldcq3fe64cbtkqbdmbagxz5a47p55qgu
 fingerprint_ignore_patterns: []
 connections: []
 contracts:
-- valory/uniswapv2router02:0.1.0:bafybeiarnyppnzp7ccrcnk4bh6jvvnzu3kmoejnsnyk5cgahimh2n3sabi
+- valory/uniswapv2router02:0.1.0:bafybeibzrvyh35wt6b62wg7q4ncvisl4fw2mlrfwamffflrpspg67vpljq
 - valory/gnosis_safe:0.1.0:bafybeiho6sbfts3zk3mftrngw37d5qnlvkqtnttt3fzexmcwkeevhu4wwi
 protocols:
 - valory/contract_api:1.0.0:bafybeidgu7o5llh26xp3u3ebq3yluull5lupiyeu6iooi2xyymdrgnzq5i
@@ -126,7 +126,9 @@ models:
       service_endpoint_base: https://learning.staging.autonolas.tech/
       coingecko_price_template: https://api.coingecko.com/api/v3/simple/price?ids=autonolas&vs_currencies=usd&x_cg_demo_api_key={api_key}
       coingecko_api_key: null
-      transfer_target_address: '0x0000000000000000000000000000000000000000'
+      uni_router_address: null
+      target_tokens: null
+      token_address: null
     class_name: Params
   requests:
     args: {}

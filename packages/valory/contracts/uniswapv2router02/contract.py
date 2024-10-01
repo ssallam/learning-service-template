@@ -19,16 +19,14 @@
 
 """This module contains the class to connect to an UniswapV2Router02 contract."""
 
-# from aea.common import JSONLike
 from aea.configurations.base import PublicId
 from aea.contracts.base import Contract
-# from aea.crypto.base import LedgerApi
 from aea_ledger_ethereum import EthereumApi
 
 from web3 import Web3
 
 
-PUBLIC_ID = PublicId.from_str("ssallam/UniswapV2Router02:0.1.0")
+PUBLIC_ID = PublicId.from_str("valory/uniswapv2router02:0.1.0")
 
 
 class UniswapV2Router02(Contract):
@@ -53,10 +51,13 @@ class UniswapV2Router02(Contract):
         :param contract_address: The router contract address on the target chain
         :param amount_in: The amount of input tokens.
         :param path: The swap path of token addresses.
-        :return: The amount of output tokens.
+        :return: dict with one key `amounts` and the value is the amounts of output tokens including the amount_in
         """
-        contract_instance = cls.get_instance(ledger_api, contract_address)
-        return contract_instance.functions.getAmountsOut(amount_in, path).call()
+        contract_instance = cls.get_instance(ledger_api, ledger_api.api.to_checksum_address(contract_address))
+        _path = [ledger_api.api.to_checksum_address(a) for a in path]
+        print(f"UniswapV2Router02.get_amounts_out: {contract_address}, {contract_instance}, {_path}")
+        get_amounts_out = getattr(contract_instance.functions, "getAmountsOut")  # noqa
+        return {"amounts": get_amounts_out(amount_in, _path).call()}
 
     @classmethod
     def build_swap_transaction(

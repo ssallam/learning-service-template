@@ -9,7 +9,7 @@ fingerprint:
   README.md: bafybeianjzeypmrcjjemjimbjzevjzkntgmuxlvj55wjbnub7dw35libyq
   __init__.py: bafybeibcpm2id7iryhk5egipnrw635stejiihyket5lkm2scrm6ubofxlm
   build/UniswapV2Router02.json: bafybeih7v6d7nsbba6sonlgu4ns6tqtbtd4re4675qqltjqkk73nlvgo2q
-  contract.py: bafybeif7kcugiljjgwb64uduzzvhkw6nr46p45ou6xlhfod2fvrckcr4k4
+  contract.py: bafybeifz5ihp4yvhzyorlb2giitxykzkuu3rumfj2wmz4bi5rcwdd6vv3e
 fingerprint_ignore_patterns: []
 contracts: []
 class_name: UniswapV2Router02
