@@ -60,8 +60,7 @@ class Params(BaseParams):
         target_tokens_str = kwargs.get("target_tokens", "")
         tokens = []
         if target_tokens_str and target_tokens_str.strip():
-            tokens = [t.strip() for t in target_tokens_str.split(",") if t.strip()]
-            tokens = [(s.upper(), a) for s, a in tokens]
+            tokens = [t.strip().split(":") for t in target_tokens_str.split(",") if t.strip()]
 
         if not tokens:
             # [(token_name, token_address), ]

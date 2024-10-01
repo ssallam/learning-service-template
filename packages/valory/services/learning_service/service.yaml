@@ -7,7 +7,7 @@ license: Apache-2.0
 fingerprint:
   README.md: bafybeid42pdrf6qrohedylj4ijrss236ai6geqgf3he44huowiuf7pl464
 fingerprint_ignore_patterns: []
-agent: valory/learning_agent:0.1.0:bafybeighr5muhkviambffo4xw6kqv3jg3bfuozh6znm47opfafxmv3ohay
+agent: valory/learning_agent:0.1.0:bafybeic4mdhe2fx2qv5tjkm7htqqyd4z6h2ysjinhmlu4cutqaoefmlpra
 number_of_agents: 4
 deployment:
   agent:
@@ -245,13 +245,13 @@ type: connection
 config:
   ledger_apis:
     ethereum:
-      address: ${ETHEREUM_LEDGER_RPC:str:http://host.docker.internal:8545}
-      chain_id: ${ETHEREUM_LEDGER_CHAIN_ID:int:31337}
+      address: ${ETHEREUM_LEDGER_RPC:str:https://virtual.gnosis.rpc.tenderly.co/616e1d2d-24ad-48e8-8574-823e9ecb96be}
+      chain_id: ${ETHEREUM_LEDGER_CHAIN_ID:int:1}
       poa_chain: ${ETHEREUM_LEDGER_IS_POA_CHAIN:bool:false}
       default_gas_price_strategy: ${ETHEREUM_LEDGER_PRICING:str:eip1559}
     gnosis:
-      address: ${GNOSIS_LEDGER_RPC:str:http://host.docker.internal:8545}
-      chain_id: ${GNOSIS_LEDGER_CHAIN_ID:int:42220}
+      address: ${GNOSIS_LEDGER_RPC:str:https://virtual.gnosis.rpc.tenderly.co/616e1d2d-24ad-48e8-8574-823e9ecb96be}
+      chain_id: ${GNOSIS_LEDGER_CHAIN_ID:int:100}
       poa_chain: ${GNOSIS_LEDGER_IS_POA_CHAIN:bool:false}
       default_gas_price_strategy: ${GNOSIS_LEDGER_PRICING:str:eip1559}
 ---

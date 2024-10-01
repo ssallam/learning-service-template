@@ -147,7 +147,8 @@ class APICheckBehaviour(LearningBaseBehaviour):  # pylint: disable=too-many-ance
             contract_callable="get_amounts_out",
             contract_address=self.params.uni_router_address,
             amount_in=amount,
-            path=[tok1, tok2, tok3, tok1]
+            path=[tok1, tok2, tok3, tok1],
+            chain_id="gnosis"
         )
         if response.performative != ContractApiMessage.Performative.STATE:
             self.context.logger.error(
@@ -242,8 +243,10 @@ class TxPreparationBehaviour(
             txs = []
 
             # borrow token 1 using flash swap
-            swap_tx = yield from self._build_flash_swap_tx(amount_in, self.params.flash_swap_pair)
-            txs.append(swap_tx)
+            # swap_tx = yield from self._build_flash_swap_tx(amount_in, self.params.flash_swap_pair)
+            # txs.append(swap_tx)
+            # SKIP flash swap because it requires a custom contract deployment
+
             # approve the router for token 1
             approve_tx = yield from self._build_approval_tx(token_addresses[0], amount_in)
             txs.append(approve_tx)
@@ -253,8 +256,10 @@ class TxPreparationBehaviour(
             )
             txs.append(swaps_tx)
             # transfer the borrowed tokens back to the pair
-            pay_back_tx = yield from self._build_transfer_tx(token_addresses[0], amount_in, self.params.flash_swap_pair)
-            txs.append(pay_back_tx)
+            # pay_back_tx = yield from self._build_transfer_tx(token_addresses[0], amount_in, self.params.flash_swap_pair)
+            # txs.append(pay_back_tx)
+            # SKIP pay back because the flash swap is not enabled
+
             self.context.logger.info(f"have {len(txs)} transactions for Multisend {tx_debug_str}")
             multisend_data = yield from self._build_multisend_tx(txs)
             self.context.logger.info(f"multisend data: {multisend_data} {tx_debug_str}")
@@ -288,6 +293,7 @@ class TxPreparationBehaviour(
             contract_callable="build_approval_tx",
             spender=self.params.uni_router_address,
             amount=amount,
+            chain_id="gnosis"
         )
         approve_data = cast(bytes, contract_api_msg.raw_transaction.body["data"])
         return {
@@ -307,6 +313,7 @@ class TxPreparationBehaviour(
             contract_callable="build_transfer_tx",
             receiver=receiver,
             amount=amount,
+            chain_id="gnosis"
         )
         transfer_data = cast(bytes, contract_api_msg.raw_transaction.body["data"])
         return {
@@ -325,7 +332,8 @@ class TxPreparationBehaviour(
             amount0_out=0,
             amount1_out=borrow_amount,
             to_address=self.synchronized_data.safe_contract_address,
-            data=bytes.fromhex("")
+            data=bytes.fromhex("a0e"),
+            chain_id="gnosis"
         )
         swap_data = cast(bytes, contract_api_msg.raw_transaction.body["data"])
 
@@ -348,6 +356,7 @@ class TxPreparationBehaviour(
             path=[t1, t2, t3, t1],
             to=self.synchronized_data.safe_contract_address,
             deadline=deadline,
+            chain_id="gnosis"
         )
         swap_data = cast(bytes, contract_api_msg.raw_transaction.body["data"])
 
@@ -365,6 +374,7 @@ class TxPreparationBehaviour(
             contract_id=str(MultiSendContract.contract_id),
             contract_callable="get_tx_data",
             multi_send_txs=txs,
+            chain_id="gnosis"
         )
 
         return cast(str, contract_api_msg.raw_transaction.body["data"])[2:]
@@ -389,6 +399,7 @@ class TxPreparationBehaviour(
             data=data,
             operation=SafeOperation.DELEGATE_CALL.value,
             safe_tx_gas=SAFE_GAS,
+            chain_id="gnosis"
         )
         if response.performative != ContractApiMessage.Performative.STATE:
             self.context.logger.error(

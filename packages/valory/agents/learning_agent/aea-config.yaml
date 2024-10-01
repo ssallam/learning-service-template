@@ -34,8 +34,8 @@ protocols:
 skills:
 - valory/abstract_abci:0.1.0:bafybeihu2bcgjk2tqjiq2zhk3uogtfszqn4osvdt7ho3fubdpdj4jgdfjm
 - valory/abstract_round_abci:0.1.0:bafybeibovsktd3uxur45nrcomq5shcn46cgxd5idmhxbmjhg32c5abyqim
-- valory/learning_abci:0.1.0:bafybeidyb6f2oq6vsmsn6b7un5kyyrx3zrfebsmpkwmkg6puthxrtu6zvm
-- valory/learning_chained_abci:0.1.0:bafybeiam7cskqxbme6bna3oflm4mulcmutxnuuggywdfy5mevdyzp5b7aa
+- valory/learning_abci:0.1.0:bafybeicq6vowr53ycixnvtc4qnh4nnr3yiljugxwczpxo5qln5ngoi46gu
+- valory/learning_chained_abci:0.1.0:bafybeicgnfrcrtbe6xttx47fedithhwle2iunipbzz36tz5rneiypk5bkq
 - valory/registration_abci:0.1.0:bafybeicnth5q4httefsusywx3zrrq4al47owvge72dqf2fziruicq6hqta
 - valory/reset_pause_abci:0.1.0:bafybeievjciqdvxhqxfjd4whqs27h6qbxqzrae7wwj7fpvxlvmtw3x35im
 - valory/termination_abci:0.1.0:bafybeid54buqxipiuduw7b6nnliiwsxajnltseuroad53wukfonpxca2om
@@ -87,13 +87,13 @@ type: connection
 config:
   ledger_apis:
     ethereum:
-      address: ${GNOSIS_LEDGER_RPC:str:http://localhost:8545}
-      chain_id: ${GNOSIS_LEDGER_CHAIN_ID:int:31337}
+      address: ${str:https://virtual.gnosis.rpc.tenderly.co/616e1d2d-24ad-48e8-8574-823e9ecb96be}
+      chain_id: ${int:31337}
       poa_chain: ${bool:false}
       default_gas_price_strategy: ${str:eip1559}
     gnosis:
-      address: ${GNOSIS_LEDGER_RPC:str:http://localhost:8545}
-      chain_id: ${GNOSIS_LEDGER_CHAIN_ID:int:1337}
+      address: ${str:https://virtual.gnosis.rpc.tenderly.co/616e1d2d-24ad-48e8-8574-823e9ecb96be}
+      chain_id: ${int:1337}
       poa_chain: ${bool:false}
       default_gas_price_strategy: ${str:eip1559}
 ---
