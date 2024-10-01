@@ -53,8 +53,10 @@ class Params(BaseParams):
         self.coingecko_api_key = kwargs.get("coingecko_api_key", None)
         self.token_address = kwargs.get("token_address", None)
         self.uni_router_address = kwargs.get("uni_router_address", None)
+        self.flash_swap_pair = kwargs.get("flash_swap_pair", "0x01f4a4d82a4c1cf12eb2dadc35fd87a14526cc79")
+        self.multisend_contract_address = kwargs.get("multisend_contract_address", "0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761")
 
-        default_tokens = "usdt:0x4ecaba5870353805a9f068101a40e0f32ed605c6,btc:0x8e5bbbb09ed1ebde8674cda39a0c169401db4252,eth:0x6a023ccd1ff6f2045c3309768ead9e68f978f6e1"
+        default_tokens = "wxdai:0xe91d153e0b41518a2ce8dd3d7944fa863463a97d,weth:0x6a023ccd1ff6f2045c3309768ead9e68f978f6e1,wbtc:0x8e5bbbb09ed1ebde8674cda39a0c169401db4252"
         target_tokens_str = kwargs.get("target_tokens", "")
         tokens = []
         if target_tokens_str and target_tokens_str.strip():

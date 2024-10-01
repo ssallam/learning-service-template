@@ -6,10 +6,10 @@ description: UniswapV2Router02 token contract
 license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
-  README.md: bafybeianjzeypmrcjjemjimbjzevjzkntgmuxlvj55wjbnub7dw35libyq
+  README.md: bafybeidibs7ptrgqei3sg24qdum6cnynk2ighzi6dxf4rz3j5vhryrtauu
   __init__.py: bafybeibcpm2id7iryhk5egipnrw635stejiihyket5lkm2scrm6ubofxlm
   build/UniswapV2Router02.json: bafybeih7v6d7nsbba6sonlgu4ns6tqtbtd4re4675qqltjqkk73nlvgo2q
-  contract.py: bafybeifz5ihp4yvhzyorlb2giitxykzkuu3rumfj2wmz4bi5rcwdd6vv3e
+  contract.py: bafybeibpvzcyzufv7kpn6vpiposlytfzji5vqac4xqc66fze2xu2d4pcv4
 fingerprint_ignore_patterns: []
 contracts: []
 class_name: UniswapV2Router02

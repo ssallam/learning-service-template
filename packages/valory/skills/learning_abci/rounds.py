@@ -19,6 +19,7 @@
 
 """This package contains the rounds of LearningAbciApp."""
 
+import json
 from enum import Enum
 from typing import Dict, FrozenSet, Optional, Set, Tuple
 
@@ -64,26 +65,17 @@ class SynchronizedData(BaseSynchronizedData):
         return CollectionRound.deserialize_collection(serialized)
 
     @property
-    def price(self) -> Optional[float]:
-        """Get the token price."""
-        return self.db.get("price", None)
-
-    @property
-    def balance(self) -> Optional[float]:
-        """Get the token balance."""
-        return self.db.get("balance", None)
-
-    @property
-    def tokens(self) -> Optional[list]:
-        return self.db.get("tokens", None)
-
-    @property
     def prices(self) -> Optional[list]:
         return self.db.get("prices", None)
 
     @property
-    def amounts(self) -> Optional[str]:
-        return self.db.get("amounts", "")
+    def amounts(self) -> Optional[list]:
+        amounts_str = self.db.get("amounts", "")
+        amounts = []
+        if amounts_str:
+            amounts = [a for _, a in sorted(json.loads(amounts_str).items(), key=lambda x: x[0])]
+
+        return amounts
 
     @property
     def participant_to_price_round(self) -> DeserializedCollection:
@@ -115,8 +107,8 @@ class APICheckRound(CollectSameUntilThresholdRound):
     no_majority_event = Event.NO_MAJORITY
     collection_key = get_name(SynchronizedData.participant_to_price_round)
     selection_key = (
-        get_name(SynchronizedData.price),
-        get_name(SynchronizedData.balance),
+        get_name(SynchronizedData.prices),
+        get_name(SynchronizedData.amounts),
     )
 
     # Event.ROUND_TIMEOUT  # this needs to be referenced for static checkers
