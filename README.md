@@ -23,5 +23,18 @@ This service performs onchain triangular arbitrage strategy using UniswapV2 rout
   - prepare a multi-tokens swap using the router contract
 
 
+## What was implemented from the final assignment
+- Multisend trasactions
+- Custom contract package
+- Minting on ethereum fork
+
+## enhancements
+- keep track of profit/loss 
+- use the token pair contracts directly to check prices and find arbitrage opportunities
+- create a solidity contract to execute a single arbitrage trade to:
+  - take advantage of the flash-swap/loan feature 
+  - optimise the execution of the trade transactions
+- target multiple DEX protocols to increase the chance of finding profit opportunities
+- target centralised exchanges to exploit price differences between the DEX and CEX pairs
 
 
